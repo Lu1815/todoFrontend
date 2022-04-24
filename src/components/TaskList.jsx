@@ -10,7 +10,6 @@ const TaskList = () => {
   const [modal, setModal] = useState(false)
   const [modalDone, setModalDone] = useState(false)
   const [dataToSend, setDataToSend] = useState({id: '', name: '', description: ''})
-  const [taskList, setTaskList] = useState([]);
   const { data, isFetching, refetch } = useGetTasksQuery();
   const [updateTask] = useUpdateTaskMutation();
   const [deleteTask] = useDeleteTaskMutation();
@@ -56,10 +55,6 @@ const TaskList = () => {
     refetch();
   }
 
-  useEffect(() => {
-    setTaskList(data);
-  }, [data, taskList]);
-
   if(isFetching) return <Loading />;
 
   return (
@@ -67,8 +62,8 @@ const TaskList = () => {
             <div className="w-full px-10 border-b border-gray-400">
                 <h1 className="text-center font-bold text-xl">Task List</h1>
             </div>
-            {taskList.length > 0 ? (
-                taskList.map((task) => (
+            {data.length > 0 ? (
+                data.map((task) => (
                 <div className="max-w-sm rounded overflow-hidden shadow-lg md:w-1/2 lg:w-1/3 xl:w-1/4 w-full break-words" key={task.id}>
                     <div className="px-6 py-4">
                     <div className="font-bold text-xl mb-2" name="name">Task name: {task.name}</div>
@@ -92,7 +87,7 @@ const TaskList = () => {
                 </div>
             ))) : (
                 <h1 className="font-bold text-xl mt-3">There are no tasks yet, add one.</h1>
-            )}
+             )}
             <Modal isOpen={modal} toggle={toggle} className="fixed flex justify-center inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full">
                 <div className="xl:w-full bg-gray-100 max-w-sm rounded overflow-hidden shadow-lg content-center mt-20 md:mt-40 content-center">
                     <ModalHeader className='border-gray-200 border-b text-center font-bold text-xl py-1' toggle={toggle}>Edit task</ModalHeader>
